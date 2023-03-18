@@ -11,6 +11,7 @@ const submission = ref<Submission>({
 
 const getCaptcha = async () => {
   captcha.value = (await useFetch('/api/generate')).data.value as Captcha
+  submission.value.captcha = ''
   submission.value.uuid = captcha.value.uuid
 }
 
@@ -25,12 +26,12 @@ const submit = async () => {
     method: 'POST',
     body: submission.value,
   }) as { data: { value: Response } }
-  console.log(data.value)
   if (data.value?.success) {
     $toast.success(data.value?.message)
   } else {
     data.value.errors.map($toast.danger)
   }
+  getCaptcha()
 }
 
 onMounted(getCaptcha)
@@ -42,10 +43,10 @@ onMounted(getCaptcha)
       <label class="w-30" for="name">Name</label>
       <input id="name" type="text" class="w-full" v-model="submission.name" />
     </div>
-    <div v-if="captcha" class="flex items-center justify-start">
+    <div class="flex items-center justify-start">
       <label class="w-30" for="captcha">Captcha</label>
-      <div class="bg-gray-300 h-11 mx-4 flex justify-center">
-        <span class="-mt-2" v-html="captcha.svg" />
+      <div class="w-40 h-11 mx-4 flex justify-center">
+        <span v-if="captcha" class="-mt-2" v-html="captcha.svg" />
       </div>
       <input id="captcha" type="text" class="w-47" v-model="submission.captcha" />
     </div>
@@ -55,3 +56,13 @@ onMounted(getCaptcha)
     </div>
   </div>
 </template>
+
+
+<style>
+p {
+  margin: 0;
+}
+button {
+  background-color: #fff;
+}
+</style>
