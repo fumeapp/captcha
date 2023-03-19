@@ -29,7 +29,7 @@ const submit = async () => {
   if (data.value?.success) {
     $toast.success(data.value?.message)
   } else {
-    data.value.errors.map($toast.danger)
+    data.value.errors.map(e => $toast.show({ message: e, timeout: 0}))
     getCaptcha()
   }
 }
@@ -38,14 +38,14 @@ onMounted(getCaptcha)
 </script>
 
 <template>
-  <div class="max-w-md m-16 mx-auto flex flex-col space-y-4 border border-slate-300 bg-slate-100 p-4 shadow-lg rounded-lg">
+  <div class="dark max-w-md m-16 mx-auto flex flex-col space-y-4 border border-gray-600 bg-gray-800 p-4 rounded-lg">
     <div class="flex items-center justify-start">
       <label class="w-30" for="name">Name</label>
       <input id="name" type="text" class="w-full" v-model="submission.name" />
     </div>
     <div class="flex items-center justify-start">
       <label class="w-30" for="captcha">Captcha</label>
-      <div class="w-40 mx-4 flex items-center bg-white border border-slate-300 rounded">
+      <div class="w-40 mx-4 flex items-center bg-gray-300 border border-gray-600 rounded">
         <span v-if="captcha" v-html="captcha.svg" />
       </div>
       <input id="captcha" type="text" class="w-40" @keydown.enter="submit" v-model="submission.captcha" />
@@ -59,7 +59,8 @@ onMounted(getCaptcha)
 
 
 <style>
-input[type="text"] { @apply h-10 border border-slate-300 rounded; }
+body, html { @apply bg-gray-900 text-gray-300; }
+input[type="text"] { @apply h-10 border border-gray-700 bg-gray-600 rounded; }
 p { margin: 0; }
-button { background-color: #fff; }
+button { background: transparent; }
 </style>
