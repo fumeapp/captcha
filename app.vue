@@ -38,15 +38,15 @@ onMounted(getCaptcha)
 </script>
 
 <template>
-  <div class="max-w-md m-16 mx-auto flex flex-col space-y-4 border border-slate-300 bg-slate-100 p-4 rounded-lg">
+  <div class="max-w-md m-16 mx-auto flex flex-col space-y-4 border border-slate-300 bg-slate-100 p-4 shadow-lg rounded-lg">
     <div class="flex items-center justify-start">
       <label class="w-30" for="name">Name</label>
       <input id="name" type="text" class="w-full" v-model="submission.name" />
     </div>
     <div class="flex items-center justify-start">
       <label class="w-30" for="captcha">Captcha</label>
-      <div class="w-40 h-11 mx-4 flex justify-center bg-white">
-        <span v-if="captcha" class="-mt-1" v-html="captcha.svg" />
+      <div class="w-40 mx-4 flex items-center bg-white border border-slate-300 rounded">
+        <span v-if="captcha" v-html="captcha.svg" />
       </div>
       <input id="captcha" type="text" class="w-40" @keydown.enter="submit" v-model="submission.captcha" />
     </div>
@@ -59,14 +59,7 @@ onMounted(getCaptcha)
 
 
 <style>
-input[type="text"] {
-  @apply h-8 border border-slate-300 rounded;
-}
-
-p {
-  margin: 0;
-}
-button {
-  background-color: #fff;
-}
+input[type="text"] { @apply h-10 border border-slate-300 rounded; }
+p { margin: 0; }
+button { background-color: #fff; }
 </style>

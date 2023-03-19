@@ -1,5 +1,9 @@
 # Secure Captcha with Nuxt 3
 
+<center>
+<img src="/captcha.png" alt="Captcha Screenshot" >
+</center>
+
 This is the codebase for the example application of the [Secure Captcha with Nuxt 3](https://fume.app) blog post.
 
 # Nuxt 3 Minimal Starter

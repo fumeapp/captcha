@@ -5,9 +5,8 @@ import fsDriver from 'unstorage/drivers/fs'
 
 export default defineEventHandler(async () => {
   const storage = createStorage({ driver: fsDriver({ base: '/tmp' }) })
-  const captcha = svgCaptcha.create()
+  const captcha = svgCaptcha.create({ height: 40 })
   const uuid = uuidv4()
   await storage.setItem(uuid, captcha.text)
-  console.log(captcha.text)
   return { uuid, svg: captcha.data }
 })

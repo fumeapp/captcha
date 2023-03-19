@@ -6,7 +6,6 @@ export default defineEventHandler(async (event) => {
   const storage = createStorage({ driver: fsDriver({ base: '/tmp' }) })
   const body = await readBody<Submission>(event)
   const entry = await storage.getItem(body.uuid)
-  console.log(body, entry)
   if (!entry || entry !== body.captcha)
     return {
       error: true,
