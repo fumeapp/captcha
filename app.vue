@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { Captcha, Submission } from '@/types/vue-shim'
+import { PushButton } from 'tailvue'
 const { $toast } = useNuxtApp()
 
 const captcha = ref<Captcha|undefined>(undefined)
@@ -11,7 +12,6 @@ const submission = ref<Submission>({
 
 const getCaptcha = async () => {
   captcha.value = (await useFetch('/api/generate')).data.value as Captcha
-  submission.value.captcha = ''
   submission.value.uuid = captcha.value.uuid
 }
 
@@ -30,35 +30,39 @@ const submit = async () => {
     $toast.success(data.value?.message)
   } else {
     data.value.errors.map($toast.danger)
+    getCaptcha()
   }
-  getCaptcha()
 }
 
 onMounted(getCaptcha)
 </script>
 
 <template>
-  <div class="max-w-md m-16 mx-auto flex flex-col space-y-4">
+  <div class="max-w-md m-16 mx-auto flex flex-col space-y-4 border border-slate-300 bg-slate-100 p-4 rounded-lg">
     <div class="flex items-center justify-start">
       <label class="w-30" for="name">Name</label>
       <input id="name" type="text" class="w-full" v-model="submission.name" />
     </div>
     <div class="flex items-center justify-start">
       <label class="w-30" for="captcha">Captcha</label>
-      <div class="w-40 h-11 mx-4 flex justify-center">
-        <span v-if="captcha" class="-mt-2" v-html="captcha.svg" />
+      <div class="w-40 h-11 mx-4 flex justify-center bg-white">
+        <span v-if="captcha" class="-mt-1" v-html="captcha.svg" />
       </div>
-      <input id="captcha" type="text" class="w-47" v-model="submission.captcha" />
+      <input id="captcha" type="text" class="w-40" @keydown.enter="submit" v-model="submission.captcha" />
     </div>
     <div class="flex items-center justify-end space-x-4">
-      <input type="button" value="Refresh" class="py-2 px-4 cursor-pointer" @click="getCaptcha" />
-      <input type="button" value="Submit" class="py-2 px-4 cursor-pointer" @click="submit" />
+      <push-button value="Refresh" @click="getCaptcha">Refresh</push-button>
+      <push-button value="Submit"  @click="submit">Submit</push-button>
     </div>
   </div>
 </template>
 
 
 <style>
+input[type="text"] {
+  @apply h-8 border border-slate-300 rounded;
+}
+
 p {
   margin: 0;
 }

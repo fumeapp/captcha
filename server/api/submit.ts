@@ -1,10 +1,13 @@
-import Store from '@/lib/store'
+import { createStorage } from 'unstorage'
+import fsDriver from 'unstorage/drivers/fs'
 import type { Submission } from '@/types/vue-shim'
 
 export default defineEventHandler(async (event) => {
+  const storage = createStorage({ driver: fsDriver({ base: '/tmp' }) })
   const body = await readBody<Submission>(event)
-  const entry = new Store().get(body.uuid)
-  if (!entry || entry.text !== body.captcha)
+  const entry = await storage.getItem(body.uuid)
+  console.log(body, entry)
+  if (!entry || entry !== body.captcha)
     return {
       error: true,
       errors: ['Invalid captcha.']
