@@ -3,9 +3,8 @@ import fsDriver from 'unstorage/drivers/fs'
 import type { Submission } from '@/types/vue-shim'
 
 export default defineEventHandler(async (event) => {
-  const storage = createStorage({ driver: fsDriver({ base: '/tmp' }) })
   const body = await readBody<Submission>(event)
-  const entry = await storage.getItem(body.uuid)
+  const entry = await createStorage({ driver: fsDriver({ base: '/tmp' }) }).getItem(body.uuid)
   if (!entry || entry !== body.captcha)
     return {
       error: true,
